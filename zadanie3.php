@@ -1,10 +1,10 @@
 <?php 
 /**
- *  Zadanie2:
+ *  Zadanie3:
  * 
- *  Proszę napisać skrypt PHP, który porównuje dwa łańcuchy znaków podanych 
- *  w polach formularza. 
- *  Skrypt wypisuje informację czy są identyczne czy nie.
+ *  3. Proszę napisać skrypt PHP, który wypisze najkrótszy lub najdłuższy 
+ *  łańcuch spośród podanych w polach formularza w zależności jaki przycisk 
+ *  użytkownik naciśnie: „longest” czy „shortest”
  * 
  */
 ?>
@@ -15,35 +15,59 @@
   </head>
   <body>
     <form action="" method="get">
-      <label for="s1">String 1:</label>
-      <input type="text" name="s1" id="s1" value="<?php echo $_REQUEST['s1'] ?>" />
       
+      <label for="str">Ciągi znaków oddzielone spacjami lub nową linią:</label>
       <br/>
-      <label for="s2">String 2:</label>
-      <input type="text" name="s2" id="s2" value="<?php echo $_REQUEST['s2'] ?>" />      
+      <textarea name="str" id="str" cols="80" rows="15"><?php echo $_REQUEST['str']?></textarea>
+
+      <br/>
+      <input type="submit" name="shortest" value="Najkrótszy!" />
       
-      <br/>
-      <input type="submit" value="Oblicz!" />
+      <input type="submit" name="longest" value="Najdłuższy!" />
     </form>
   
 <?php
-$s1 = $_REQUEST['s1'];
-$s2 = $_REQUEST['s2'];
+$action = null;
 
+// empty sprawdzi czy el. tablicy istnieje i czy nie jest null, 0 albo ''
+if(!empty($_REQUEST['shortest'])){
+  $action = 'shortest';
+}elseif(!empty($_REQUEST['longest'])){
+  $action = 'longest';
+}
 
 /*
- * Sprawdzam czy ktorykolwiek istnieje, zeby nie wypisywac komunikatu
- * kiedy strona jest ladowana zanim wpiszesz stringi
+ * Jesli wiadomo ile stringow ma porownac, mozna zrobic tak jak w zadaniu2 
+ * porownujac wartosci np. 2 pol formularza.
+ * Ten sposob jest uniwersalny bo mozesz miec dowolna ilosc stringow. 
  */
-if($s1 || $s2){
-  if(strlen($s1) > strlen($s2)){
-    echo "String 1 jest dłuższy od stringu 2";
-  }elseif(strlen($s1) == strlen($s2)){
-    echo "Oba stringi mają taką samą długość";
-  }else{
-    echo "String 2 jest dłuższy od stringu 1";
+if($action){
+  $strings = preg_split('/[\s\r\n]+/im', trim($_REQUEST['str']));
+  
+  
+  if($action == 'longest'){
+    
+    $longest = '';
+    foreach($strings as $str){
+      $longest = strlen($str) >= strlen($longest) ? $str: $longest;
+    }
+    echo "<p>Najdłuższy ciąg znaków to: '{$longest}'";
+    
+    
+  }else{ // shortest
+    
+    $shortest = null;
+    foreach($strings as $str){
+      // zainicjuj jesli to jest pierwszy string:
+      if($shortest === null) $shortest = $str;
+
+      $shortest = strlen($str) <= strlen($shortest) ? $str : $shortest;
+    }
+    
+    echo "<p>Najkrótszy ciąg znaków to: '{$shortest}'";
   }
 }
+
 
 ?>
     
