@@ -17,40 +17,43 @@
   <body>
     <form action="" method="get">
       <label for="n">Ilość wartości funkcji (n):</label>
-      <input type="text" name="n" id="n" value="<?php echo $_REQUEST['n'] ?>" />
+      <input type="text" name="n" id="n" value="<?php echo @$_REQUEST['n'] ?>" />
       
       <br/>
       <label for="a">Początek przedziału (a):</label>
-      <input type="text" name="a" id="a" value="<?php echo $_REQUEST['a'] ?>" />      
+      <input type="text" name="a" id="a" value="<?php echo @$_REQUEST['a'] ?>" />      
       
       <br/>
       <label for="b">Koniec przedziału (b):</label>
-      <input type="text" name="b" id="b" value="<?php echo $_REQUEST['b'] ?>" />      
+      <input type="text" name="b" id="b" value="<?php echo @$_REQUEST['b'] ?>" />      
       
       <br/>
       <input type="submit" value="Oblicz!" />
     </form>
   
 <?php
-$n = $_REQUEST['n'];
-$a = $_REQUEST['a'];
-$b = $_REQUEST['b'];
+$n = @$_REQUEST['n'];
+$a = @$_REQUEST['a'];
+$b = @$_REQUEST['b'];
 
 $error = false;
 
-if(!validate($n)){
-  echo "<p>Parametr 'n' nie jest liczbą!</p>";
-  $error = true;
-}
+// Zeby nie sprawdzalo, jesli nie wyslales formularza jeszcze:
+if($n || $a || $b){
+  if(!validate($n)){
+    echo "<p>Parametr 'n' nie jest liczbą!</p>";
+    $error = true;
+  }
 
-if(!validate($a)){
-  echo "<p>Parametr 'a' nie jest liczbą!</p>";
-  $error = true;
-}
+  if(!validate($a)){
+    echo "<p>Parametr 'a' nie jest liczbą!</p>";
+    $error = true;
+  }
 
-if(!validate($b)){
-  echo "<p>Parametr 'b' nie jest liczbą!</p>";
-  $error = true;
+  if(!validate($b)){
+    echo "<p>Parametr 'b' nie jest liczbą!</p>";
+    $error = true;
+  }
 }
 
 if(!$error && $n >0 && $b > $a){
