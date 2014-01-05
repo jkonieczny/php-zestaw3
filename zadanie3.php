@@ -36,10 +36,12 @@ $s2 = $_REQUEST['s2'];
  * kiedy strona jest ladowana zanim wpiszesz stringi
  */
 if($s1 || $s2){
-  if($s1 === $s2){
-    echo "Oba łańcuchy są identyczne";
+  if(strlen($s1) > strlen($s2)){
+    echo "String 1 jest dłuższy od stringu 2";
+  }elseif(strlen($s1) == strlen($s2)){
+    echo "Oba stringi mają taką samą długość";
   }else{
-    echo "Łańcuchy znaków różnią się od siebie!";
+    echo "String 2 jest dłuższy od stringu 1";
   }
 }
 
